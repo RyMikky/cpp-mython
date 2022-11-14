@@ -1,14 +1,14 @@
-#pragma once
+﻿#pragma once
 
 #include <memory>
 #include <stdexcept>
 
 namespace parse {
-class Lexer;
+    class Lexer;
 }
 
 namespace runtime {
-class Executable;
+    class Executable;
 }
 
 struct ParseError : std::runtime_error {
