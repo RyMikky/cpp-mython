@@ -260,54 +260,13 @@ namespace runtime {
     }
 
     bool NotEqual(const ObjectHolder& lhs, const ObjectHolder& rhs, Context& context) {
+        // возвращаем что левая часть НЕ равна правой
         return !Equal(lhs, rhs, context);
     }
 
     bool Greater(const ObjectHolder& lhs, const ObjectHolder& rhs, Context& context) {
-
-        // ДЛЯ ПРОВЕРКИ Test_Runner РЕАЛИЗОВАНО ЧЕРЕЗ ДВЕ ПРОВЕРКИ
+        // возвращаем что левая часть НЕ меньше и НЕ равна правой
         return !Less(lhs, rhs, context) && !Equal(lhs, rhs, context);
-
-        // ОБРАТНАЯ РЕАЛИЗАЦИЯ В КОММЕНТАРИИ НИЖЕ 
-        // РЕАЛИЗАЦИЯ СДЕЛАНА НА dynamic_cast
-        /*
-        // берем сырые указатели на переданные объекты
-        runtime::Object* lhs_data = lhs.Get();
-        runtime::Object* rhs_data = rhs.Get();
-
-        // если там действительно есть что сравнить
-        if (lhs_data && rhs_data) {
-            // пытаемся привести к типу runtime::ClassInstance
-            if (dynamic_cast<runtime::ClassInstance*>(lhs_data)) {
-                runtime::ClassInstance* lhs_instanse = dynamic_cast<runtime::ClassInstance*>(lhs_data);
-                // проверяем наличие метода "__lt__"
-                if (lhs_instanse->HasMethod("__lt__", 1)) {
-                    return !(lhs_instanse->Call("__lt__", { ObjectHolder().Share(*rhs_data) }, context).TryAs<Bool>()->GetValue());
-                }
-                else {
-                    throw std::runtime_error("Cannot compare objects for equality"s);
-                }
-            }
-            // пытаемся привести к типу runtime::Bool
-            else if (dynamic_cast<runtime::Bool*>(lhs_data) && dynamic_cast<runtime::Bool*>(rhs_data)) {
-                return dynamic_cast<runtime::Bool*>(lhs_data)->GetValue() > dynamic_cast<runtime::Bool*>(rhs_data)->GetValue();
-            }
-            // пытаемся привести к типу runtime::Number
-            else if (dynamic_cast<runtime::Number*>(lhs_data) && dynamic_cast<runtime::Number*>(rhs_data)) {
-                return dynamic_cast<runtime::Number*>(lhs_data)->GetValue() > dynamic_cast<runtime::Number*>(rhs_data)->GetValue();
-            }
-            // пытаемся привести к типу runtime::String
-            else if (dynamic_cast<runtime::String*>(lhs_data) && dynamic_cast<runtime::String*>(rhs_data)) {
-                return dynamic_cast<runtime::String*>(lhs_data)->GetValue() > dynamic_cast<runtime::String*>(rhs_data)->GetValue();
-            }
-            else {
-                throw std::runtime_error("Cannot compare objects for equality"s);
-            }
-        }
-        else {
-            throw std::runtime_error("Cannot compare objects for equality"s);
-        }
-        */
     }
 
     bool LessOrEqual(const ObjectHolder& lhs, const ObjectHolder& rhs, Context& context) {
